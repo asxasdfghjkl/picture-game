@@ -1,0 +1,23 @@
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  border: 1px gray solid;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.box.selected {
+  opacity: 0;
+  cursor: default;
+}
+
+.boxContainer {
+  display: grid;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
