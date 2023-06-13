@@ -15,5 +15,11 @@ export default {
       imageUrl: '圖片網址',
       loadFailed: '載入圖片失敗',
     },
+    game: {
+      showAnswer: '顯示答案',
+      endGame: '結束遊戲',
+      confirmShowAnswer: '你確定要顯示答案嗎？',
+      confirmEndGame: '你確定要結束遊戲嗎？',
+    },
   },
 };

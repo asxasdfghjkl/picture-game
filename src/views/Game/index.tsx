@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useTransition } from 'react';
 import { GameConfig } from '../../defines/gameConfig';
 import './index.css';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
 type GameProps = {
   config: GameConfig;
@@ -12,6 +13,7 @@ export const Game: React.FunctionComponent<GameProps> = ({
   config,
   onEndGame,
 }) => {
+  const { t } = useTranslation();
   const [boxes, setBoxes] = React.useState(() =>
     new Array(config.cols * config.rows).fill(false)
   );
@@ -23,9 +25,37 @@ export const Game: React.FunctionComponent<GameProps> = ({
     setBoxes(newArray);
   };
 
+  const handleShowAnswer = () => {
+    if (confirm(t('game.confirmShowAnswer'))) {
+      setBoxes((arr) => arr.map((v) => true));
+    }
+  };
+
+  const handleEndGame = () => {
+    if (confirm(t('game.confirmEndGame'))) {
+      onEndGame();
+    }
+  };
+
   return (
     <div className="container-fluid">
-      <div>
+      <div className="text-end mt-2">
+        <button
+          type="button"
+          className="btn btn-secondary mx-3"
+          onClick={handleShowAnswer}
+        >
+          <i className="bi bi-eye-fill" /> {t('game.showAnswer')}
+        </button>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={handleEndGame}
+        >
+          <i className="bi bi-eye-fill" /> {t('game.endGame')}
+        </button>
+      </div>
+      <div className="position-relative m-3 border rounded">
         <div
           className="boxContainer z-1"
           style={{
@@ -35,6 +65,7 @@ export const Game: React.FunctionComponent<GameProps> = ({
         >
           {boxes.map((box, index) => (
             <div
+              key={index}
               className={clsx('box', box && 'selected')}
               data-index={index}
               onClick={handleBoxClick}

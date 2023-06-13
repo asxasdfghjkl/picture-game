@@ -17,6 +17,12 @@ const en: typeof zh = {
       imageUrl: 'Image URL',
       loadFailed: 'Failed To Load Image',
     },
+    game: {
+      confirmEndGame: 'Are you sure to end this game?',
+      confirmShowAnswer: 'Are you sure to reveal the image?',
+      showAnswer: 'Reveal Image',
+      endGame: 'Exit Game',
+    },
   },
 };
 
