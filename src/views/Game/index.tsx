@@ -55,26 +55,28 @@ export const Game: React.FunctionComponent<GameProps> = ({
           <i className="bi bi-eye-fill" /> {t('game.endGame')}
         </button>
       </div>
-      <div className="position-relative m-3 border rounded">
-        <div
-          className="boxContainer z-1"
-          style={{
-            gridTemplateColumns: `repeat(${config.cols}, 1fr)`,
-            gridTemplateRows: `repeat(${config.rows}, 1fr)`,
-          }}
-        >
-          {boxes.map((box, index) => (
-            <div
-              key={index}
-              className={clsx('box', box && 'selected')}
-              data-index={index}
-              onClick={handleBoxClick}
-            >
-              {index + 1}
-            </div>
-          ))}
+      <div className="d-flex justify-content-center">
+        <div className="card position-relative m-3 border rounded d-block">
+          <div
+            className="boxContainer z-1"
+            style={{
+              gridTemplateColumns: `repeat(${config.cols}, 1fr)`,
+              gridTemplateRows: `repeat(${config.rows}, 1fr)`,
+            }}
+          >
+            {boxes.map((box, index) => (
+              <div
+                key={index}
+                className={clsx('box', box && 'selected')}
+                data-index={index}
+                onClick={handleBoxClick}
+              >
+                {index + 1}
+              </div>
+            ))}
+          </div>
+          <img src={config.imageUrl} className="w-100 d-block" />
         </div>
-        <img src={config.imageUrl} className="w-100" />
       </div>
     </div>
   );
