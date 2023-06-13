@@ -7,7 +7,7 @@
   cursor: pointer;
   box-sizing: border-box;
   user-select: none;
-  font-size: 2rem;
+  font-size: var(--box-font-size);
 }
 
 .box.selected {
@@ -22,4 +22,5 @@
   right: 0;
   top: 0;
   bottom: 0;
+  --box-font-size: 1rem;
 }

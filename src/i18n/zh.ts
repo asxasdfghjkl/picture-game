@@ -14,6 +14,7 @@ export default {
       start: '開始',
       imageUrl: '圖片網址',
       loadFailed: '載入圖片失敗',
+      pasteImage: '貼上圖片',
     },
     game: {
       showAnswer: '顯示答案',

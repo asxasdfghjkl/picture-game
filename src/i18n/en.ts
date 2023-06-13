@@ -16,6 +16,7 @@ const en: typeof zh = {
       start: 'Start Game',
       imageUrl: 'Image URL',
       loadFailed: 'Failed To Load Image',
+      pasteImage: 'Paste From Clipboard',
     },
     game: {
       confirmEndGame: 'Are you sure to end this game?',

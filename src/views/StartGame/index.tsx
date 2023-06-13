@@ -3,22 +3,14 @@ import { useTranslation } from 'react-i18next';
 import LangBtn from '../../components/LangBtn';
 import { GameConfig } from '../../defines/gameConfig';
 import './index.css';
+import { readFileDataUrl } from '../../helpers/file.helper';
+import FileSelectBtn from './FileSelectBtn';
+import PasteFromClipboardBtn from './PasteFromClipboardBtn';
 
 type StartProps = {
   defaultConfig: GameConfig;
   onStartGame: (config: GameConfig) => void;
 };
-
-function getDataUrl(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const fileReader = new FileReader();
-    fileReader.onload = () => {
-      resolve(fileReader.result as string);
-    };
-    fileReader.onerror = (ex) => reject(ex);
-    fileReader.readAsDataURL(file);
-  });
-}
 
 export const StartGame: React.FunctionComponent<StartProps> = ({
   defaultConfig,
@@ -33,12 +25,9 @@ export const StartGame: React.FunctionComponent<StartProps> = ({
     setConfig((c) => ({ ...c, [evt.target.name]: evt.target.value }));
   };
 
-  const handleSelectFile = async (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const file = evt.target.files?.[0];
-    evt.target.files = null;
-    if (file) {
-      setConfig((c) => ({ ...c, await: getDataUrl(file) }));
-    }
+  const handleFileSelect = async (blob: Blob) => {
+    const imageUrl = await readFileDataUrl(blob);
+    setConfig((c) => ({ ...c, imageUrl }));
   };
 
   const handleLoadUrl = () => {
@@ -62,9 +51,10 @@ export const StartGame: React.FunctionComponent<StartProps> = ({
   const handleFileDrop = async (evt: React.DragEvent<HTMLImageElement>) => {
     evt.preventDefault();
     const file = evt.dataTransfer.files?.[0];
-    const dataUrl = await getDataUrl(file);
-    setConfig((c) => ({ ...c, imageUrl: dataUrl }));
     imageRef.current?.classList.remove('dragover');
+    if (file) {
+      handleFileSelect(file);
+    }
   };
 
   return (
@@ -126,7 +116,7 @@ export const StartGame: React.FunctionComponent<StartProps> = ({
                   alert(t('startGame.loadFailed'));
                   setConfig((c) => ({ ...c, imageUrl: '' }));
                 }}
-                className="ratio ratio-16x9 d-block w-100 border rounded"
+                className="d-block w-100 border rounded"
               />
             </div>
           </div>
@@ -138,25 +128,8 @@ export const StartGame: React.FunctionComponent<StartProps> = ({
             >
               <i className="bi bi-link" /> {t('startGame.fromUrl')}
             </button>
-            <button
-              type="button"
-              className="btn btn-outline-secondary position-relative overflow-hidden w-100"
-            >
-              <input
-                type="file"
-                className="position-absolute opacity-0"
-                onChange={handleSelectFile}
-                style={{
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  width: '300%',
-                  cursor: 'pointer',
-                }}
-              />
-              <i className="bi bi-folder-symlink-fill" />{' '}
-              {t('startGame.selectFile')}
-            </button>
+            <FileSelectBtn onFileSelect={handleFileSelect} />
+            <PasteFromClipboardBtn onImagePaste={handleFileSelect} />
           </div>
         </div>
         <button

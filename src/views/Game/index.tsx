@@ -14,6 +14,7 @@ export const Game: React.FunctionComponent<GameProps> = ({
   onEndGame,
 }) => {
   const { t } = useTranslation();
+  const [boxFs, setBoxFs] = React.useState(16);
   const [boxes, setBoxes] = React.useState(() =>
     new Array(config.cols * config.rows).fill(false)
   );
@@ -37,31 +38,37 @@ export const Game: React.FunctionComponent<GameProps> = ({
     }
   };
 
+  const imageRef = React.useRef<HTMLImageElement>(null);
+
+  React.useEffect(() => {
+    const calcFontSize = () => {
+      const fs =
+        Math.min(
+          imageRef.current?.clientWidth || 800,
+          imageRef.current?.clientHeight || 600
+        ) /
+        Math.min(config.cols, config.rows) /
+        3;
+
+      setBoxFs(fs);
+    };
+    window.addEventListener('resize', calcFontSize);
+    calcFontSize();
+    return () => {
+      window.removeEventListener('resize', calcFontSize);
+    };
+  }, [setBoxFs, config.rows, config.cols]);
+
   return (
     <div className="container-fluid">
-      <div className="text-end mt-2">
-        <button
-          type="button"
-          className="btn btn-secondary mx-3"
-          onClick={handleShowAnswer}
-        >
-          <i className="bi bi-eye-fill" /> {t('game.showAnswer')}
-        </button>
-        <button
-          type="button"
-          className="btn btn-secondary"
-          onClick={handleEndGame}
-        >
-          <i className="bi bi-eye-fill" /> {t('game.endGame')}
-        </button>
-      </div>
       <div className="d-flex justify-content-center">
-        <div className="card position-relative m-3 border rounded d-block">
+        <div className="card position-relative m-3 border rounded d-block overflow-hidden">
           <div
             className="boxContainer z-1"
             style={{
               gridTemplateColumns: `repeat(${config.cols}, 1fr)`,
               gridTemplateRows: `repeat(${config.rows}, 1fr)`,
+              '--box-font-size': `${boxFs}px`,
             }}
           >
             {boxes.map((box, index) => (
@@ -75,8 +82,24 @@ export const Game: React.FunctionComponent<GameProps> = ({
               </div>
             ))}
           </div>
-          <img src={config.imageUrl} className="w-100 d-block" />
+          <img ref={imageRef} src={config.imageUrl} className="w-100 d-block" />
         </div>
+      </div>
+      <div className="text-end mt-2">
+        <button
+          type="button"
+          className="btn btn-secondary mx-3"
+          onClick={handleShowAnswer}
+        >
+          <i className="bi bi-eye-fill" /> {t('game.showAnswer')}
+        </button>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={handleEndGame}
+        >
+          <i className="bi bi-x" /> {t('game.endGame')}
+        </button>
       </div>
     </div>
   );
