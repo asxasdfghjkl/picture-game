@@ -1,8 +1,8 @@
-import React, { useTransition } from 'react';
+import clsx from 'clsx';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { GameConfig } from '../../defines/gameConfig';
 import './index.css';
-import clsx from 'clsx';
-import { useTranslation } from 'react-i18next';
 
 type GameProps = {
   config: GameConfig;
@@ -26,13 +26,13 @@ export const Game: React.FunctionComponent<GameProps> = ({
   };
 
   const handleShowAnswer = () => {
-    if (confirm(t('game.confirmShowAnswer'))) {
-      setBoxes((arr) => arr.map((v) => true));
+    if (confirm(t('game.confirmShowAnswer')!)) {
+      setBoxes((arr) => arr.map(() => true));
     }
   };
 
   const handleEndGame = () => {
-    if (confirm(t('game.confirmEndGame'))) {
+    if (confirm(t('game.confirmEndGame')!)) {
       onEndGame();
     }
   };

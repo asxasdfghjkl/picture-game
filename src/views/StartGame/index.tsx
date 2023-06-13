@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
-import { GameConfig } from '../../defines/gameConfig';
 import { useTranslation } from 'react-i18next';
 import LangBtn from '../../components/LangBtn';
+import { GameConfig } from '../../defines/gameConfig';
 import './index.css';
 
 type StartProps = {
@@ -12,8 +12,8 @@ type StartProps = {
 function getDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const fileReader = new FileReader();
-    fileReader.onload = (evt) => {
-      resolve(fileReader.result);
+    fileReader.onload = () => {
+      resolve(fileReader.result as string);
     };
     fileReader.onerror = (ex) => reject(ex);
     fileReader.readAsDataURL(file);
@@ -42,7 +42,7 @@ export const StartGame: React.FunctionComponent<StartProps> = ({
   };
 
   const handleLoadUrl = () => {
-    const url = prompt(t('startGame.imageUrl'));
+    const url = prompt(t('startGame.imageUrl')!);
     if (url) {
       setConfig((c) => ({ ...c, imageUrl: url }));
     }
@@ -118,7 +118,7 @@ export const StartGame: React.FunctionComponent<StartProps> = ({
                   `https://placehold.co/1280x720?text=Drop%20Image%20Here%20To%20Load`
                 }
                 onDragOver={handleDragOver}
-                onDragLeave={(evt) =>
+                onDragLeave={() =>
                   imageRef.current?.classList.remove('dragover')
                 }
                 onDrop={handleFileDrop}
