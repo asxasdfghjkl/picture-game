@@ -65,11 +65,13 @@ export const Game: React.FunctionComponent<GameProps> = ({
         <div className="card position-relative m-3 border rounded d-block overflow-hidden">
           <div
             className="boxContainer z-1"
-            style={{
-              gridTemplateColumns: `repeat(${config.cols}, 1fr)`,
-              gridTemplateRows: `repeat(${config.rows}, 1fr)`,
-              '--box-font-size': `${boxFs}px`,
-            }}
+            style={
+              {
+                gridTemplateColumns: `repeat(${config.cols}, 1fr)`,
+                gridTemplateRows: `repeat(${config.rows}, 1fr)`,
+                '--box-font-size': `${boxFs}px`,
+              } as any
+            }
           >
             {boxes.map((box, index) => (
               <div
